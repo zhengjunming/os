@@ -23,7 +23,7 @@ public class HRRN {
      */
     private static Queue<PCB> processQueue = new LinkedList<>();
     /**
-     * 就绪队列
+     * 就绪队列,根据响应比排序
      */
     private static Queue<PCB> waitQueue = new PriorityQueue<>((o1, o2) -> String.valueOf(o2.getRp()).compareTo(String.valueOf(o1.getRp())));
     /**
@@ -115,9 +115,8 @@ public class HRRN {
         }
     }
 
-    public void avgTurnAroundTime() {
-        double avgTurnAroundTime = finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
-        System.out.println("平均周转时间为： " + avgTurnAroundTime);
+    public double avgTurnAroundTime() {
+        return finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
     }
 
     public void execute() {
@@ -129,7 +128,6 @@ public class HRRN {
                     }
                 }
             }
-
             scheduleProcesses();
             if (currentProcess != null) {
                 currentProcess.setRemainingTime(currentProcess.getRemainingTime() - 1);

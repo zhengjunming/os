@@ -1,12 +1,10 @@
-package experiment.distribution;
+package course.design;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Create by ming on 19-1-1 下午1:34
- * <p>
- * 内存
  *
  * @author ming
  * I'm the one to ignite the darkened skies.
@@ -57,11 +55,22 @@ public class Memory {
     }
 
     static class Partition {
+        @Override
+        public String toString() {
+            return "Partition{" +
+                    "jobId=" + jobId +
+                    ", size=" + size +
+                    ", head=" + head +
+                    '}';
+        }
+
         private int jobId;
+
         /**
          * 分区大小
          */
         private int size;
+
         /**
          * 首地址
          */
@@ -79,15 +88,6 @@ public class Memory {
         Partition(int size, int head) {
             this.size = size;
             this.head = head;
-        }
-
-        @Override
-        public String toString() {
-            return "Partition{" +
-                    "jobId=" + jobId +
-                    ", size=" + size +
-                    ", head=" + head +
-                    '}';
         }
 
         public int getJobId() {

@@ -2,6 +2,8 @@ package experiment.distribution;
 
 /**
  * Create by ming on 19-1-1 上午11:56
+ * <p>
+ * 作业
  *
  * @author ming
  * I'm the one to ignite the darkened skies.

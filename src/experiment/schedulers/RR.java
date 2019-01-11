@@ -79,9 +79,8 @@ public class RR {
         AnalysisUtil.print(clock, waitQueue, finishQueue, currentProcess);
     }
 
-    public void avgTurnAroundTime() {
-        double avgTurnAroundTime = finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
-        System.out.println("平均周转时间为： " + avgTurnAroundTime);
+    public double avgTurnAroundTime() {
+        return finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
     }
 
     public void execute() {

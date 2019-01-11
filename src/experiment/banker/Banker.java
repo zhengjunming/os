@@ -33,7 +33,9 @@ public class Banker extends Thread {
      */
     private static List<PCB> waitPcb = new LinkedList<>();
 
-
+    /**
+     * 存放进程数组
+     */
     private static PCB[] pcbs = new PCB[N];
 
     /**
@@ -97,11 +99,6 @@ public class Banker extends Thread {
     }
 
     private void bankerAlgorithm() {
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (currentProcess != null) {
             if (isFinished(currentProcess)) {
                 // 回收资源

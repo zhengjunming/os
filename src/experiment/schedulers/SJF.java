@@ -51,25 +51,31 @@ public class SJF {
 
     private static void scheduleProcesses() {
         if (currentProcess == null) {
+            // 当前进程为空
             if (!waitQueue.isEmpty()) {
+                // 在就绪队列查找进程
                 PCB process = waitQueue.poll();
                 process.setProcessState(PCB.ProcessState.RUN);
                 currentProcess = process;
                 printProcess();
             }
         } else if (currentProcess.getRemainingTime() == 0) {
+            // 剩余时间为0
             currentProcess.setProcessState(PCB.ProcessState.FINISH);
             finishQueue.add(currentProcess);
             currentProcess = null;
             if (!waitQueue.isEmpty()) {
+                // 在就绪队列查找进程
                 PCB process = waitQueue.poll();
                 process.setProcessState(PCB.ProcessState.RUN);
                 currentProcess = process;
             }
             printProcess();
         } else if (currentProcess.getRemainingTime() > 0) {
+            // 剩余时间大于0
             if (!waitQueue.isEmpty()) {
                 if (waitQueue.peek().getRemainingTime() < currentProcess.getRemainingTime()) {
+                    // 判断是否有进程需要运行时间小于正在运行的进程
                     currentProcess.setProcessState(PCB.ProcessState.WAIT);
                     waitQueue.add(currentProcess);
                     currentProcess = waitQueue.poll();
@@ -84,24 +90,27 @@ public class SJF {
         AnalysisUtil.print(clock, waitQueue, finishQueue, currentProcess);
     }
 
-    public void avgTurnAroundTime() {
-        double avgTurnAroundTime = finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
-        System.out.println("平均周转时间为： " + avgTurnAroundTime);
+    public double avgTurnAroundTime() {
+        return finishQueue.stream().collect(Collectors.averagingInt(PCB::getTurnAroundTime));
     }
 
     public void execute() {
         while (clock <= totalTime) {
             if (processQueue.size() != 0) {
                 for (PCB pcb : processQueue) {
+                    // 判断是否有进程到达
                     if (pcb.getArrivalTime() == clock) {
                         waitQueue.add(pcb);
                     }
                 }
             }
+            // 进程调度
             scheduleProcesses();
+            // 减少正在运行的进程的剩余时间
             if (currentProcess != null) {
                 currentProcess.setRemainingTime(currentProcess.getRemainingTime() - 1);
                 if (currentProcess.getRemainingTime() == 0) {
+                    // 计算该进程的周转时间
                     currentProcess.setTurnAroundTime(clock - currentProcess.getArrivalTime() + 1);
                 }
             }

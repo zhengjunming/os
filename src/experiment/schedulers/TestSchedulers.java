@@ -1,5 +1,8 @@
 package experiment.schedulers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Create by ming on 18-12-30 下午8:05
  * <p>
@@ -9,6 +12,8 @@ package experiment.schedulers;
  * I'm the one to ignite the darkened skies.
  */
 public class TestSchedulers {
+
+    private static List<Double> turnTimes = new ArrayList<>();
 
     public static void main(String[] args) {
         PCB[] pcbs = new PCB[5];
@@ -40,24 +45,30 @@ public class TestSchedulers {
 
         SJF sjf = new SJF(pcbs);
         sjf.execute();
-        sjf.avgTurnAroundTime();
+        turnTimes.add(sjf.avgTurnAroundTime());
 
         for (PCB pcb : pcbs) {
             pcb.setRemainingTime(pcb.getTotalTime());
             pcb.setProcessState(PCB.ProcessState.WAIT);
+            pcb.setTurnAroundTime(0);
         }
 
         RR rr = new RR(pcbs);
         rr.execute();
-        rr.avgTurnAroundTime();
+        turnTimes.add(rr.avgTurnAroundTime());
 
         for (PCB pcb : pcbs) {
             pcb.setRemainingTime(pcb.getTotalTime());
             pcb.setProcessState(PCB.ProcessState.WAIT);
+            pcb.setTurnAroundTime(0);
         }
 
         HRRN hrrn = new HRRN(pcbs);
         hrrn.execute();
-        hrrn.avgTurnAroundTime();
+        turnTimes.add(hrrn.avgTurnAroundTime());
+
+        System.out.printf("短进程优先调度的平均周转时间: %.2f\n" +
+                "时间片轮转调度的平均周转时间: %.2f\n" +
+                "高响应比优先调度的平均周转时间: %.2f\n", turnTimes.get(0), turnTimes.get(1), turnTimes.get(2));
     }
 }
